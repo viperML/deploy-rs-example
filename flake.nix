@@ -4,16 +4,15 @@
   inputs = {
     nixpkgs.url = github:NixOS/nixpkgs/nixos-unstable;
     flake-utils-plus.url = github:gytis-ivaskevicius/flake-utils-plus;
-
+    flake-compat = {
+      url = github:edolstra/flake-compat;
+      flake = false;
+    };
     deploy-rs = {
       url = github:serokell/deploy-rs;
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    nixos-generators = {
-      url = github:nix-community/nixos-generators;
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
   };
 
   outputs = inputs@{ self, nixpkgs, flake-utils-plus, ... }:
@@ -26,26 +25,24 @@
     flake-utils-plus.lib.mkFlake {
       inherit self inputs nixosModules;
 
-      hostDefaults.modules = with nixosModules; [
-        common
-        admin
-      ];
-
       hosts = {
-        test-vm.modules = with nixosModules; [
-          inputs.nixos-generators.nixosModules.qcow
+        hetzner.modules = with nixosModules; [
+          common
+          admin
+          hardware-hetzner
         ];
       };
 
-
       outputsBuilder = (channels: {
+
         devShell = channels.nixpkgs.mkShell {
           name = "my-deploy-shell";
-
           buildInputs = with channels.nixpkgs; [
+            nixosUnstable
             inputs.deploy-rs.defaultPackage.${system}
           ];
         };
+
       });
 
       checks = builtins.mapAttrs (system: deployLib: deployLib.deployChecks self.deploy) inputs.deploy-rs.lib;
