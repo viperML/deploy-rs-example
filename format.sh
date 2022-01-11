@@ -1,16 +1,14 @@
-#! /usr/bin/env nix-shell
+#!/usr/bin/env bash
 set -ex
-cd "$(dirname $BASH_SOURCE)"
-#! nix-shell -i bash -p bash gptfdisk util-linux btrfs-progs
 
 if [ "$EUID" -ne 0 ]
   then echo "Please run as root for mount permissions!"
   exit
 fi
 
-TARGET="$1"
 MNT="/mnt"
 BTRFS_OPTS="compress=zstd,noatime"
+TARGET="$1"
 
 sgdisk --zap-all "${TARGET}"
 sgdisk -a1 -n1:2048:4095 -t1:EF02 "${TARGET}"

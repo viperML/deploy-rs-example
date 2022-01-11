@@ -40,7 +40,19 @@
           buildInputs = with channels.nixpkgs; [
             nixUnstable
             inputs.deploy-rs.defaultPackage.${system}
+            gptfdisk
+            util-linux
+            btrfs-progs
           ];
+          shellHook =
+            let
+              run-format = channels.nixpkgs.writeShellScriptBin
+                "run-format"
+                "${builtins.readFile ./format.sh}"
+                ;
+            in ''
+              export PATH="${run-format}/bin:$PATH"
+            '';
         };
 
       });
