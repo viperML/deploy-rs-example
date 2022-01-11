@@ -38,7 +38,7 @@
         devShell = channels.nixpkgs.mkShell {
           name = "my-deploy-shell";
           buildInputs = with channels.nixpkgs; [
-            nixosUnstable
+            nixUnstable
             inputs.deploy-rs.defaultPackage.${system}
           ];
         };
