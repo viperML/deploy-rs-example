@@ -23,7 +23,10 @@ mkfs.btrfs -f -L NIXOS "${TARGET}-part2"
 mkdir -p "${MNT}"
 umount -R "${MNT}" || :
 mount "${TARGET}-part2" "${MNT}"
-btrfs subvolume create "${MNT}"/@{rootfs,nix,boot,swap}
+btrfs subvolume create "${MNT}"/@rootfs
+btrfs subvolume create "${MNT}"/@nix
+btrfs subvolume create "${MNT}"/@boot
+btrfs subvolume create "${MNT}"/@swap
 umount "${MNT}"
 
 mount -o "$BTRFS_OPTS,subvol=@rootfs" "${TARGET}-part2" "${MNT}"
