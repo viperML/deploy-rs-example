@@ -2,6 +2,8 @@
 
 {
   networking.networkmanager.enable = true;
+  systemd.services.systemd-timesyncd.after = [ "network-online.target" ];
+  systemd.services.systemd-timesyncd.wants = [ "network-online.target" ];
 
   boot = {
     initrd = {

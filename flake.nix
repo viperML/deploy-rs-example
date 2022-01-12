@@ -2,7 +2,7 @@
   description = "My server flake";
 
   inputs = {
-    nixpkgs.url = github:NixOS/nixpkgs/nixos-unstable;
+    nixpkgs.url = github:NixOS/nixpkgs/nixos-21.11;
     flake-utils-plus.url = github:gytis-ivaskevicius/flake-utils-plus;
     flake-compat = {
       url = github:edolstra/flake-compat;
@@ -12,7 +12,6 @@
       url = github:serokell/deploy-rs;
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
   };
 
   outputs = inputs@{ self, nixpkgs, flake-utils-plus, ... }:
