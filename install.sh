@@ -9,7 +9,7 @@ fi
 
 BTRFS_OPTS="compress=zstd,noatime"
 MNT="/mnt"
-TARGET="$1"
+TARGET="/dev/sda"
 
 sgdisk --zap-all "${TARGET}"
 sgdisk -a1 -n1:2048:4095 -t1:EF02 "${TARGET}"
@@ -17,22 +17,22 @@ sgdisk     -n2:0:0       -t2:8300 "${TARGET}"
 
 fdisk -l "${TARGET}"
 
-mkfs.btrfs -f -L NIXOS "${TARGET}-part2"
+mkfs.btrfs -f -L NIXOS "${TARGET}2"
 
 mkdir -p "${MNT}"
 umount -R "${MNT}" || :
-mount "${TARGET}-part2" "${MNT}"
+mount "${TARGET}2" "${MNT}"
 btrfs subvolume create "${MNT}"/@rootfs
 btrfs subvolume create "${MNT}"/@nix
 btrfs subvolume create "${MNT}"/@boot
 btrfs subvolume create "${MNT}"/@swap
 umount "${MNT}"
 
-mount -o "$BTRFS_OPTS,subvol=@rootfs" "${TARGET}-part2" "${MNT}"
+mount -o "$BTRFS_OPTS,subvol=@rootfs" "${TARGET}2" "${MNT}"
 mkdir "${MNT}"/{nix,boot,swap}
-mount -o "$BTRFS_OPTS,subvol=@nix" "${TARGET}-part2" "${MNT}"/nix
-mount -o "$BTRFS_OPTS,subvol=@swap" "${TARGET}-part2" "${MNT}"/swap
-mount -o "$BTRFS_OPTS,subvol=@boot" "${TARGET}-part2" "${MNT}"/boot
+mount -o "$BTRFS_OPTS,subvol=@nix" "${TARGET}2" "${MNT}"/nix
+mount -o "$BTRFS_OPTS,subvol=@swap" "${TARGET}2" "${MNT}"/swap
+mount -o "$BTRFS_OPTS,subvol=@boot" "${TARGET}2" "${MNT}"/boot
 
 findmnt -R --target "${MNT}"
 
