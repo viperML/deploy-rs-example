@@ -8,5 +8,4 @@ if [ "$EUID" -ne 0 ]
   exit
 fi
 
-
-nixos-install --root /mnt --flake .#hetzner
+nixos-install --root "$2" --flake .#hetzner
