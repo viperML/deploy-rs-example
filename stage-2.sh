@@ -25,11 +25,13 @@ mount "${TARGET}-part2" "${MNT}"
 btrfs subvolume create "${MNT}"/@rootfs
 btrfs subvolume create "${MNT}"/@nix
 btrfs subvolume create "${MNT}"/@boot
+btrfs subvolume create "${MNT}"/@swap
 umount "${MNT}"
 
 mount -o "$BTRFS_OPTS,subvol=@rootfs" "${TARGET}-part2" "${MNT}"
-mkdir "${MNT}"/{nix,boot}
+mkdir "${MNT}"/{nix,boot,swap}
 mount -o "$BTRFS_OPTS,subvol=@nix" "${TARGET}-part2" "${MNT}"/nix
+mount -o "$BTRFS_OPTS,subvol=@swap" "${TARGET}-part2" "${MNT}"/swap
 mount -o "$BTRFS_OPTS,subvol=@boot" "${TARGET}-part2" "${MNT}"/boot
 
 findmnt -R --target "${MNT}"

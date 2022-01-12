@@ -1,3 +1,4 @@
+
 #!/usr/bin/env bash
 set -ex
 
@@ -6,4 +7,4 @@ if [ "$EUID" -ne 0 ]
   exit
 fi
 
-nix-shell -p nixUnstable -p git --run "nixos-install --root /mnt --flake .#hetzner"
+nix-shell -p nixUnstable --run "nixos-install --root /mnt --flake .#hetzner"
