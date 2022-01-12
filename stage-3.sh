@@ -8,3 +8,4 @@ if [ "$EUID" -ne 0 ]
 fi
 
 nix-shell -p nixUnstable -p git --run "nixos-install --root /mnt --flake .#hetzner"
+umount -R /mnt
