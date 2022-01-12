@@ -1,4 +1,5 @@
-#!/usr/bin/env bash
+#!/usr/bin/env nix-shell
+#!nix-shell -i bash -p bash gptfdisk util-linux btrfs-progs
 set -ex
 
 if [ "$EUID" -ne 0 ]
