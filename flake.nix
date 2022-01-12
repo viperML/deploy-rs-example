@@ -24,7 +24,24 @@
           common
           admin
           hardware-hetzner
+
+          # docker
         ];
+      };
+
+      deploy.nodes = {
+        my-node = {
+          hostname = "<your address goes here>";
+          fastConnection = false;
+          profiles = {
+            my-profile = {
+              sshUser = "admin";
+              path =
+                inputs.deploy-rs.lib.x86_64-linux.activate.nixos self.nixosConfigurations.hetzner;
+              user = "root";
+            };
+          };
+        };
       };
 
       outputsBuilder = (channels: {
