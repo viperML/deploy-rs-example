@@ -35,3 +35,6 @@ mount -o "$BTRFS_OPTS,subvol=@swap" "${TARGET}-part2" "${MNT}"/swap
 mount -o "$BTRFS_OPTS,subvol=@boot" "${TARGET}-part2" "${MNT}"/boot
 
 findmnt -R --target "${MNT}"
+
+nix-shell -p nixUnstable -p git --run "nixos-install --root ${MNT} --flake .#hetzner"
+umount -R /mnt
