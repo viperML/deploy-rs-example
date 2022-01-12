@@ -2,6 +2,8 @@
 
 {
   networking.networkmanager.enable = true;
+
+  # systemd-timesyncd failed beacuse it didn't wait for network
   systemd.services.systemd-timesyncd.after = [ "network-online.target" ];
   systemd.services.systemd-timesyncd.wants = [ "network-online.target" ];
 
