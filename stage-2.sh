@@ -8,7 +8,7 @@ if [ "$EUID" -ne 0 ]
 fi
 
 BTRFS_OPTS="compress=zstd,noatime"
-MNT="$2"
+MNT="/mnt"
 TARGET="$1"
 
 sgdisk --zap-all "${TARGET}"
